@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>PAINEL INFINIX HOT 50 PRO - RED EDITION</title>
+    <style>
+        :root { --red: #ff0000; --dark: #1a0000; }
+        
+        body {
+            margin: 0; background: #000; color: white;
+            font-family: 'Impact', sans-serif; overflow: hidden;
+            height: 100vh; width: 100vw;
+        }
+
+        /* Mira Fixa Centralizada */
+        #crosshair {
+            position: fixed; top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 9999; pointer-events: none;
+            display: none; color: var(--red);
+            text-shadow: 0 0 5px #000;
+        }
+
+        /* Overlay de Instrução */
+        #overlay {
+            position: fixed; inset: 0; display: flex; 
+            flex-direction: column; justify-content: center; 
+            align-items: center; z-index: 1; background: radial-gradient(circle, #300 0%, #000 100%);
+        }
+
+        /* Painel Principal */
+        #panel {
+            display: none; position: fixed; inset: 15px;
+            background: rgba(20, 0, 0, 0.95); z-index: 10;
+            padding: 20px; overflow-y: auto;
+            border: 3px solid var(--red); border-radius: 20px;
+            box-shadow: 0 0 30px var(--red);
+        }
+
+        h2 { color: var(--red); text-align: center; letter-spacing: 2px; border-bottom: 2px solid var(--red); padding-bottom: 10px; }
+
+        .card {
+            background: rgba(255, 0, 0, 0.05); border: 1px dashed var(--red);
+            border-radius: 10px; padding: 15px; margin-bottom: 20px;
+        }
+
+        label { display: block; margin-bottom: 8px; font-size: 0.9rem; color: #ff9999; }
+
+        .btn {
+            background: linear-gradient(to bottom, #f00, #800); color: white; border: none;
+            padding: 15px; width: 100%; border-radius: 8px;
+            font-weight: bold; cursor: pointer; text-transform: uppercase;
+            box-shadow: 0 4px 0 #500; margin-bottom: 5px;
+        }
+
+        .btn:active { transform: translateY(3px); box-shadow: none; background: #fff; color: #f00; }
+
+        select {
+            width: 100%; padding: 12px; background: #000; 
+            color: var(--red); border: 1px solid var(--red); border-radius: 5px;
+            font-weight: bold; margin-bottom: 10px;
+        }
+
+        .sensi-box { 
+            background: #000; border: 1px solid #333; padding: 10px; 
+            font-family: monospace; color: #0f0; font-size: 1.1rem; border-radius: 5px;
+        }
+
+        .hint { font-size: 11px; color: #777; text-align: center; display: block; margin-top: 15px; }
+    </style>
+</head>
+<body>
+
+    <div id="crosshair">+</div>
+
+    <div id="overlay">
+        <h1 style="color: var(--red); margin: 0;">INFINIX HOT 50 PRO</h1>
+        <p style="font-family: sans-serif;">Pressione <span style="color:var(--red)">3 DEDOS</span> para abrir</p>
+    </div>
+
+    <div id="panel">
+        <h2>MENU VIP RED</h2>
+        
+        <div class="card">
+            <label>SENSI OTIMIZADA (100 - 200)</label>
+            <div id="display-sensi" class="sensi-box">Aguardando geração...</div>
+            <button class="btn" onclick="gerarSensi()">Gerar +2000 Sensis</button>
+        </div>
+
+        <div class="card">
+            <label>TIPO DE MIRA</label>
+            <select id="mira-tipo" onchange="atualizarMira()">
+                <option value="none">DESATIVADA</option>
+                <option value="+">+</option>
+                <option value="•">PONTO (•)</option>
+                <option value="⌖">PRECISÃO (⌖)</option>
+                <option value="<>">< > </option>
+                <option value="✳">ESTRELA (✳)</option>
+            </select>
+
+            <label>TAMANHO DA MIRA</label>
+            <select id="mira-tamanho" onchange="atualizarMira()">
+                <option value="15px">PEQUENA</option>
+                <option value="25px" selected>MÉDIA</option>
+                <option value="40px">GRANDE</option>
+                <option value="60px">GIGANTE (NO SCOPE)</option>
+            </select>
+        </div>
+
+        <div class="card">
+            <label>AJUSTES DE MOTOR</label>
+            <button class="btn" onclick="alert('FPS cravado no 60/90!')">FORÇAR FPS ALTO</button>
+            <button class="btn" onclick="alert('Otimização Suave Aplicada!')">MODO JOGO SUAVE</button>
+        </div>
+
+        <span class="hint">Toque com 3 dedos para fechar</span>
+    </div>
+
+    <script>
+        const panel = document.getElementById('panel');
+        const cross = document.getElementById('crosshair');
+
+        // FUNÇÃO DE 3 DEDOS (ABRIR E FECHAR)
+        window.addEventListener('touchstart', (e) => {
+            if (e.touches.length === 3) {
+                if (panel.style.display === 'block') {
+                    panel.style.display = 'none';
+                } else {
+                    panel.style.display = 'block';
+                }
+            }
+        });
+
+        // GERADOR DE SENSI ENTRE 100 E 200
+        function gerarSensi() {
+            const r = () => (Math.random() * (200 - 100) + 100).toFixed(1);
+            const dpi = Math.floor(Math.random() * (960 - 411) + 411);
+            
+            document.getElementById('display-sensi').innerHTML = `
+                GERAL: ${r()}<br>
+                RED DOT: ${r()}<br>
+                MIRA 2X: ${r()}<br>
+                MIRA 4X: ${r()}<br>
+                DPI: ${dpi}
+            `;
+        }
+
+        // ATUALIZAR MIRA EM TEMPO REAL
+        function atualizarMira() {
+            const tipo = document.getElementById('mira-tipo').value;
+            const tamanho = document.getElementById('mira-tamanho').value;
+
+            if (tipo === "none") {
+                cross.style.display = "none";
+            } else {
+                cross.style.display = "block";
+                cross.innerText = tipo;
+                cross.style.fontSize = tamanho;
+            }
+        }
+    </script>
+</body>
+</html>
